@@ -1,7 +1,7 @@
 from .winter_requests import WinterRequest
 
 
-def test_requests_id_anime(request) :
+def test_requests_id_anime(request):
     url = 'https://api.myanimelist.net/v2/anime/season/2006/winter?offset=1&limit=100'
     response_contest = {'teste': 'teste'}
     wr = WinterRequest()

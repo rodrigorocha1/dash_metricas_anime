@@ -1,5 +1,5 @@
 import requests
-from src.drives.interfaces.winter_requests_interface import WinterRequestsInterface
+from src.drivers.interfaces.winter_requests_interface import WinterRequestsInterface
 import os
 from dotenv import load_dotenv
 from typing import Dict
@@ -15,13 +15,14 @@ class WinterRequest(WinterRequestsInterface):
 
     def requests_id_anime(self, ano, temporada: str, offset: int, limit: int) -> Dict[int, str]:
         url_id = self.__url + str(ano) + '/' + temporada + '?offset=' + str(offset) + '&limit=' + str(limit)
-        response = requests.get(url_id, headers=self.__header)
+        response = requests.get(url_id, headers=self.__header,)
         return {
-            "status_code": response.status_code,
-            "json": response.json()
+            'status_code': response.status_code,
+            'json': response.json(),
+            'paginacao' : response.json()['paging']
         }
 
 
 if __name__ == '__main__':
     w = WinterRequest()
-    print(w.requests_id_anime(2006, 'winter'))
+    print(w.requests_id_anime(2006, 'winter', 1, 100))
