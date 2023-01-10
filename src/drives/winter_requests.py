@@ -13,10 +13,9 @@ class WinterRequest(WinterRequestsInterface):
         self.__url = 'https://api.myanimelist.net/v2/anime/season/'
         self.__header = {'Authorization': os.environ['Authorization']}
 
-    def requests_id_anime(self, ano, temporada: str) -> Dict[int, str]:
-        url_id = self.__url  + str(ano) + '/' + temporada  + '?offset=0&limit=100'
+    def requests_id_anime(self, ano, temporada: str, offset: int, limit: int) -> Dict[int, str]:
+        url_id = self.__url + str(ano) + '/' + temporada + '?offset=' + str(offset) + '&limit=' + str(limit)
         response = requests.get(url_id, headers=self.__header)
-
         return {
             "status_code": response.status_code,
             "json": response.json()
