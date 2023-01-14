@@ -10,19 +10,34 @@ load_dotenv()
 class WinterRequest(WinterRequestsInterface):
 
     def __init__(self) -> None:
-        self.__url = 'https://api.myanimelist.net/v2/anime/season/'
+        self.__url = 'https://api.myanimelist.net/v2/anime/'
         self.__header = {'Authorization': os.environ['Authorization']}
 
     def requests_id_anime(self, ano, temporada: str, offset: int) -> Dict[int, str]:
-        url_id = self.__url + str(ano) + '/' + temporada + '?offset=' + str(offset) + '&limit=100'
-        response = requests.get(url_id, headers=self.__header,)
+        url_id = self.__url + 'season/' + str(ano) + '/' + temporada + '?offset=' + str(offset) + '&limit=100'
+        response = requests.get(url_id, headers=self.__header, )
         return {
             'status_code': response.status_code,
             'json': response.json(),
-            'paginacao' : response.json()['paging']
+            'paginacao': response.json()['paging']
         }
+
+    def requests_stats(self, id: str):
+        url_chamada = self.__url + str(id) + '?fields=id,title,main_picture,start_date,end_date,synopsis,mean,rank,' \
+                                        'num_list_users,num_scoring_users,media_type,status,genres,num_episodes,' \
+                                        'start_season,source,rating,average_episode_duration,pictures,studios,' \
+                                        'statistics,num_list_users '
+
+        req_stats = requests.get(url_chamada, headers=self.__header)
+
+        return req_stats.json()
 
 
 if __name__ == '__main__':
     w = WinterRequest()
-    print(w.requests_id_anime(2006, 'winter', 1))
+
+    stats_anime = w.requests_stats(42361)
+    print(stats_anime['id'])
+    for generos in stats_anime['genres']:
+        print(generos['id'])
+        print(generos['name'])
