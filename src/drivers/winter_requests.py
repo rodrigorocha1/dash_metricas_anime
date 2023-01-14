@@ -16,17 +16,29 @@ class WinterRequest(WinterRequestsInterface):
     def requests_id_anime(self, ano, temporada: str, offset: int) -> Dict[int, str]:
         url_id = self.__url + 'season/' + str(ano) + '/' + temporada + '?offset=' + str(offset) + '&limit=100'
         response = requests.get(url_id, headers=self.__header, )
-        return {
-            'status_code': response.status_code,
-            'json': response.json(),
-            'paginacao': response.json()['paging']
-        }
+        try:
+            retorno = {
+                'status_code': response.status_code,
+                'json': response.json(),
+
+                'paginacao': response.json()['paging']
+
+            }
+        except:
+            retorno = {
+                'status_code': response.status_code,
+                'json': response.json(),
+
+                'paginacao': 0
+
+            }
+        return retorno
 
     def requests_stats(self, id: str):
         url_chamada = self.__url + str(id) + '?fields=id,title,main_picture,start_date,end_date,synopsis,mean,rank,' \
-                                        'num_list_users,num_scoring_users,media_type,status,genres,num_episodes,' \
-                                        'start_season,source,rating,average_episode_duration,pictures,studios,' \
-                                        'statistics,num_list_users '
+                                             'num_list_users,num_scoring_users,media_type,status,genres,num_episodes,' \
+                                             'start_season,source,rating,average_episode_duration,pictures,studios,' \
+                                             'statistics,num_list_users '
 
         req_stats = requests.get(url_chamada, headers=self.__header)
 
@@ -35,9 +47,10 @@ class WinterRequest(WinterRequestsInterface):
 
 if __name__ == '__main__':
     w = WinterRequest()
-
-    stats_anime = w.requests_stats(42361)
-    print(stats_anime['id'])
-    for generos in stats_anime['genres']:
-        print(generos['id'])
-        print(generos['name'])
+    j = w.requests_id_anime(2023, 'spring', 0)
+    print(j['paginacao'], len(j['paginacao']))
+    # stats_anime = w.requests_stats(42361)
+    # print(stats_anime['id'])
+    # for generos in stats_anime['genres']:
+    #     print(generos['id'])
+    #     print(generos['name'])
