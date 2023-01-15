@@ -10,7 +10,7 @@ lista_temporadas = ['winter', 'spring', 'summer', 'fall']
 paginacao = 0
 lista_animes = []
 i = 1
-for ano in range(2023, 2024):
+for ano in range(2020, 2024):
     paginacao = 0
     for temporada in lista_temporadas:
         while True:
