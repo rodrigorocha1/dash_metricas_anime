@@ -1,9 +1,20 @@
+import os
+
 from src.infra.interface.idatabaserepository import IDatabaseRepository
 import csv
 from typing import List
 
 
 class DatabaseRepository(IDatabaseRepository):
+
+
+
+    def teste(self, a):
+        with open(os.getcwd() + '\\src\\arquivos_csv\\teste.csv' , 'a', newline='') as teste:
+            cursor = csv.writer(teste)
+            cursor.writerow([a])
+
+
     @classmethod
     def insert_data(cls, lista_stats_animes: List):
         nome_colunas_genero = ['id_anime', 'id_genero', 'nome_genero']
@@ -11,17 +22,21 @@ class DatabaseRepository(IDatabaseRepository):
         nome_colunas_studio = ['id_anime', 'id_studio', 'name']
         nomes_colunas_img = ['id_anime', 'medium_img', 'large_img', 'season', 'year']
 
-        with open('../../src/arquivos_csv/relacao_anime_main_picture.csv', 'a', newline='') as relacao_anime_main_picture:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_main_picture.csv', 'a', newline='') as relacao_anime_main_picture:
 
             cursor = csv.writer(relacao_anime_main_picture, delimiter=';')
             cursor.writerow(nomes_colunas_img)
             for anime_url_img in lista_stats_animes:
+                print('error', anime_url_img)
+                print(anime_url_img['id'], anime_url_img['main_picture']['medium'],
+                                 anime_url_img['main_picture']['large'], anime_url_img['start_season']['year'],
+                                 anime_url_img['start_season']['season'])
                 cursor.writerow([anime_url_img['id'], anime_url_img['main_picture']['medium'],
                                  anime_url_img['main_picture']['large'], anime_url_img['start_season']['year'],
                                  anime_url_img['start_season']['season']])
             relacao_anime_main_picture.close()
 
-        with open('../../src/arquivos_csv/relacao_genero_id_anime.csv', 'a', newline='') as relacao_genero_id_anime:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_genero_id_anime.csv', 'a', newline='') as relacao_genero_id_anime:
 
             cursor = csv.writer(
                 relacao_genero_id_anime,
@@ -33,7 +48,7 @@ class DatabaseRepository(IDatabaseRepository):
                     cursor.writerow([stats_anime['id'], genero['id'], genero['name']])
             relacao_genero_id_anime.close()
 
-        with open('../../src/arquivos_csv/relacao_url_figura_id_anime.csv', 'a',
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_url_figura_id_anime.csv', 'a',
                   newline='') as relacao_url_figura_id_anime:
             cursor = csv.writer(
                 relacao_url_figura_id_anime,
@@ -45,7 +60,7 @@ class DatabaseRepository(IDatabaseRepository):
                     cursor.writerow([stats_anime['id'], picture['medium'], picture['large']])
             relacao_url_figura_id_anime.close()
 
-        with open('../../src/arquivos_csv/relacao_studios_anime.csv', 'a', newline='') as relacao_studios_anime:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_studios_anime.csv', 'a', newline='') as relacao_studios_anime:
 
             cursor = csv.writer(
                 relacao_studios_anime,
@@ -57,7 +72,7 @@ class DatabaseRepository(IDatabaseRepository):
                     cursor.writerow([stats_anime['id'], studio['id'], studio['name']])
             relacao_studios_anime.close()
 
-        with open('../../src/arquivos_csv/relacao_anime_statistics.csv', 'a', newline='') as relacao_anime_statistics:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_statistics.csv', 'a', newline='') as relacao_anime_statistics:
             nomes_colunas_status = ['id_anime', 'watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch']
             cursor = csv.writer(relacao_anime_statistics, delimiter=';')
             cursor.writerow(nomes_colunas_status)
@@ -69,7 +84,7 @@ class DatabaseRepository(IDatabaseRepository):
                                  stats_anime['statistics']['status']['plan_to_watch']])
             relacao_anime_statistics.close()
 
-        with open('../../src/arquivos_csv/dados_gerais.csv', 'a', newline='') as dados_gerais:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\dados_gerais.csv', 'a', newline='') as dados_gerais:
             lista_nomes_colunas = lista_stats_animes
             del lista_nomes_colunas[0]['studios']
             del lista_nomes_colunas[0]['genres']
@@ -94,3 +109,6 @@ class DatabaseRepository(IDatabaseRepository):
                     del stat_anime['start_season']
                 escritor.writerow(stat_anime)
             dados_gerais.close()
+
+
+
