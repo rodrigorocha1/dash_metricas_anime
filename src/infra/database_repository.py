@@ -7,13 +7,10 @@ from typing import List
 
 class DatabaseRepository(IDatabaseRepository):
 
-
-
     def teste(self, a):
-        with open(os.getcwd() + '\\src\\arquivos_csv\\teste.csv' , 'a', newline='') as teste:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\teste.csv', 'a', newline='') as teste:
             cursor = csv.writer(teste)
             cursor.writerow([a])
-
 
     @classmethod
     def insert_data(cls, lista_stats_animes: List):
@@ -22,21 +19,19 @@ class DatabaseRepository(IDatabaseRepository):
         nome_colunas_studio = ['id_anime', 'id_studio', 'name']
         nomes_colunas_img = ['id_anime', 'medium_img', 'large_img', 'season', 'year']
 
-        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_main_picture.csv', 'a', newline='') as relacao_anime_main_picture:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_main_picture.csv', 'a', newline='') \
+                as relacao_anime_main_picture:
 
             cursor = csv.writer(relacao_anime_main_picture, delimiter=';')
             cursor.writerow(nomes_colunas_img)
             for anime_url_img in lista_stats_animes:
-                print('error', anime_url_img)
-                print(anime_url_img['id'], anime_url_img['main_picture']['medium'],
-                                 anime_url_img['main_picture']['large'], anime_url_img['start_season']['year'],
-                                 anime_url_img['start_season']['season'])
                 cursor.writerow([anime_url_img['id'], anime_url_img['main_picture']['medium'],
                                  anime_url_img['main_picture']['large'], anime_url_img['start_season']['year'],
                                  anime_url_img['start_season']['season']])
             relacao_anime_main_picture.close()
 
-        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_genero_id_anime.csv', 'a', newline='') as relacao_genero_id_anime:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_genero_id_anime.csv', 'a', newline='') \
+                as relacao_genero_id_anime:
 
             cursor = csv.writer(
                 relacao_genero_id_anime,
@@ -60,7 +55,8 @@ class DatabaseRepository(IDatabaseRepository):
                     cursor.writerow([stats_anime['id'], picture['medium'], picture['large']])
             relacao_url_figura_id_anime.close()
 
-        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_studios_anime.csv', 'a', newline='') as relacao_studios_anime:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_studios_anime.csv', 'a', newline='') \
+                as relacao_studios_anime:
 
             cursor = csv.writer(
                 relacao_studios_anime,
@@ -72,7 +68,8 @@ class DatabaseRepository(IDatabaseRepository):
                     cursor.writerow([stats_anime['id'], studio['id'], studio['name']])
             relacao_studios_anime.close()
 
-        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_statistics.csv', 'a', newline='') as relacao_anime_statistics:
+        with open(os.getcwd() + '\\src\\arquivos_csv\\relacao_anime_statistics.csv', 'a', newline='') \
+                as relacao_anime_statistics:
             nomes_colunas_status = ['id_anime', 'watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch']
             cursor = csv.writer(relacao_anime_statistics, delimiter=';')
             cursor.writerow(nomes_colunas_status)
@@ -100,15 +97,17 @@ class DatabaseRepository(IDatabaseRepository):
             )
             escritor.writeheader()
             for chave, stat_anime in enumerate(lista_stats_animes):
-                if chave == 1:
+                if chave == 0:
+                    escritor.writerow(stat_anime)
+                else:
+
                     del stat_anime['studios']
                     del stat_anime['genres']
                     del stat_anime['pictures']
                     del stat_anime['main_picture']
                     del stat_anime['statistics']
                     del stat_anime['start_season']
-                escritor.writerow(stat_anime)
+                    print('segunda vez ', chave, stat_anime)
+                    escritor.writerow(stat_anime)
+
             dados_gerais.close()
-
-
-

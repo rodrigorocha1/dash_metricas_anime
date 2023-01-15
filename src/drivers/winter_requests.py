@@ -35,7 +35,7 @@ class WinterRequest(WinterRequestsInterface):
         return retorno
 
     def requests_stats(self, id: str):
-        url_chamada = self.__url + str(id) + '?fields=id,title,main_picture,start_date,end_date,synopsis,mean,rank,' \
+        url_chamada = self.__url + str(id) + '?fields=id,title,main_picture,start_date,synopsis,mean,rank,' \
                                              'num_list_users,num_scoring_users,media_type,status,genres,num_episodes,' \
                                              'start_season,source,rating,average_episode_duration,pictures,studios,' \
                                              'statistics,num_list_users '

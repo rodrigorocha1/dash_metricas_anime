@@ -1,8 +1,10 @@
+from tqdm import tqdm
+
 from src.drivers.winter_requests import WinterRequest
-from src.drivers.anime_stats import AnimeStats
+from src.infra.database_repository import DatabaseRepository
 
+dr = DatabaseRepository()
 wr = WinterRequest()
-
 
 lista_temporadas = ['winter', 'spring', 'summer', 'fall']
 paginacao = 0
@@ -34,8 +36,9 @@ for ano in range(2023, 2024):
 
 lista_animes_stats = []
 print(len(lista_animes))
-for animes in lista_animes:
-    if animes['id'] in [49515, 50287]:
-        stats_anime = wr.requests_stats(animes['id'])
-        lista_animes_stats.append(stats_anime)
-print(lista_animes_stats)
+for animes in tqdm(lista_animes):
+    stats_anime = wr.requests_stats(animes['id'])
+    lista_animes_stats.append(stats_anime)
+
+
+dr.insert_data(lista_animes_stats)
