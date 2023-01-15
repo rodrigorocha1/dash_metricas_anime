@@ -2,7 +2,7 @@ from src.drivers.winter_requests import WinterRequest
 from src.drivers.anime_stats import AnimeStats
 
 wr = WinterRequest()
-ans = AnimeStats()
+
 
 lista_temporadas = ['winter', 'spring', 'summer', 'fall']
 paginacao = 0
@@ -11,9 +11,7 @@ i = 1
 for ano in range(2023, 2024):
     paginacao = 0
     for temporada in lista_temporadas:
-
         while True:
-
             b = wr.requests_id_anime(ano, temporada, paginacao)
             print('-----------')
             print(ano, temporada, paginacao)
@@ -34,4 +32,10 @@ for ano in range(2023, 2024):
             i += 1
         paginacao = 0
 
-print(lista_animes)
+lista_animes_stats = []
+print(len(lista_animes))
+for animes in lista_animes:
+    if animes['id'] in [49515, 50287]:
+        stats_anime = wr.requests_stats(animes['id'])
+        lista_animes_stats.append(stats_anime)
+print(lista_animes_stats)
