@@ -3,7 +3,7 @@ from src.drivers.interfaces.winter_requests_interface import WinterRequestsInter
 import os
 from dotenv import load_dotenv
 from typing import Dict
-
+from time import sleep
 load_dotenv()
 
 
@@ -41,7 +41,7 @@ class WinterRequest(WinterRequestsInterface):
                                              'statistics,num_list_users '
 
         req_stats = requests.get(url_chamada, headers=self.__header)
-
+        sleep(0.5)
         return req_stats.json()
 
 
