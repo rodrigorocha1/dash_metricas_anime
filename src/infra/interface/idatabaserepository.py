@@ -25,5 +25,7 @@ class IDatabaseRepository(ABC):
         pass
 
     @abstractmethod
-    def insert_data_dados_gerais(self, dados):
+    def insert_data_dados_gerais(self, dados: List):
         pass
+
+
